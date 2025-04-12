@@ -1,8 +1,11 @@
-cargo-management/
+cargo-management-docker/
 ├── app.py
-├── cargo.db            # This will be created automatically when running the app for the first time.
+├── requirements.txt
+├── Dockerfile
+├── docker-compose.yml
 └── templates/
     ├── layout.html
     ├── login.html
+    ├── register.html
     ├── dashboard.html
     └── add_cargo.html
