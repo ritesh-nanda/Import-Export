@@ -1,8 +1,6 @@
-cargo-management-docker/
+cargo-management/
 ├── app.py
 ├── requirements.txt
-├── Dockerfile
-├── docker-compose.yml
 └── templates/
     ├── layout.html
     ├── login.html

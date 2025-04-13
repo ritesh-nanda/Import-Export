@@ -4,10 +4,10 @@ from flask_pymongo import PyMongo
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your-secret-key'  # Change for production
+app.config['SECRET_KEY'] = 'your-secret-key'  # Replace with a secure secret in production
 
-# Use environment variable for MongoDB URI with a fallback
-app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://mongo:27017/cargo")
+# Set the MongoDB URI. You can set this via an environment variable or directly here.
+app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://localhost:27017/cargo")
 
 mongo = PyMongo(app)
 users_collection = mongo.db.users
@@ -16,7 +16,7 @@ cargo_collection = mongo.db.cargo
 @app.route('/')
 def index():
     if 'user_id' in session:
-        # Get all cargo shipments from MongoDB
+        # Retrieve all cargo shipments from MongoDB
         shipments = list(cargo_collection.find())
         return render_template("dashboard.html", shipments=shipments)
     return redirect(url_for('login'))
@@ -46,7 +46,7 @@ def register():
         if users_collection.find_one({"username": username}):
             flash("Username already exists", "danger")
             return redirect(url_for('register'))
-        # Insert new user into MongoDB
+        # Insert the new user into MongoDB
         new_user = {"username": username, "password": password}
         users_collection.insert_one(new_user)
         flash("Registration successful! Please log in.", "success")
@@ -64,7 +64,7 @@ def add_cargo():
         destination = request.form['destination']
         description = request.form['description']
         status = request.form['status']
-        # Insert cargo shipment record into MongoDB
+        # Insert the cargo shipment record into MongoDB
         cargo_data = {
             "shipment_type": shipment_type,
             "origin": origin,
@@ -79,4 +79,4 @@ def add_cargo():
     return render_template("add_cargo.html")
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True)
